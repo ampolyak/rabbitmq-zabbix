@@ -1,40 +1,38 @@
 rabbitmq-zabbix
 =======================
-[![Build Status](https://travis-ci.org/jasonmcintosh/rabbitmq-zabbix.svg?branch=master)](https://travis-ci.org/jasonmcintosh/rabbitmq-zabbix)
-
 Template and checks to monitor rabbitmq queues and server via Zabbix.
 
-## SOURCE: 
-https://github.com/jasonmcintosh/rabbitmq-zabbix
+## SOURCE:
+https://github.com/ampolyak/rabbitmq-zabbix based on https://github.com/jasonmcintosh/rabbitmq-zabbix
 
 ## WHY:
-Because the SNMP plugin isn't an officially supported plugin, and rabbitmqctl based monitors are REALLY slow in comparison.
+Because scripts from Jason's repo doesn't support python3, and there is no support for exchangies monitoring. And file count reduction, of-course.
 
 ## WHAT:
 Set of python scripts, zabbix template, and associated data to do autodiscovery
 
 ## HOW:
-1. Install the files into /etc/zabbix/ folder, change permissions to Zabbix.
+1. Copy 'scripts/bin' to '/usr/local/bin/' , set correct permissions
 2. Setup configuration (see below)
 3. Import the template to your zabbix server
 4. Make sure zabbix_sender is installed
 5. **WARNING** Watch your process timeout.  I hit an issue with the amount of data and queues in rabbit where processing the results took longer than 3 seconds - that's the default timeout for the agent to kill a process.  If I can switch to a file based push instead of calling send for each item, this will hopefully reduce the time to send even further
 6. Restart the local zabbix agent
-
+7. Copy scripts/rabbitmq.cron to /etc/cron.d/
 
 ## CONFIGURATION:
 **Basic security recommendation** See https://www.rabbitmq.com/access-control.html for more information on access control.
 ```
 When setting up a monitoring system, a general rule is that you should not to use tbe built-in
-guest account.  Guest is an admin account with full permissions.  A basic suggestion is to setup 
-a read only account who can access the management API.  Make sure that account is READ ONLY.  With 
+guest account.  Guest is an admin account with full permissions.  A basic suggestion is to setup
+a read only account who can access the management API.  Make sure that account is READ ONLY.  With
 one caveat - the monitoring user should be able execute the aliveness-test api.  That might mean
 needing a slightly different set of permissions or pre-creation of the aliveness check queues.
-IF using guest a warning - it can only access RabbitMQ management via localhost so you will 
+IF using guest a warning - it can only access RabbitMQ management via localhost so you will
 need to set HOSTNAME=localhost
 
 Below are sample commands to add a monitoring user with the required permissions.  Use these
-at your own risk or as a starting point - NOT a finishing point!  
+at your own risk or as a starting point - NOT a finishing point!
 
 rabbitmqctl add_user zabbix pass
 rabbitmqctl set_user_tags zabbix monitoring
@@ -42,15 +40,17 @@ rabbitmqctl set_permissions -p / zabbix '^aliveness-test$' '^amq\.default$' '^al
 
 ```
 
-You should create a `.rab.auth` file in the `scripts/rabbitmq` directory. This file allows you to change default parameters. The format is `VARIABLE=value`, one per line:
+You should update configuraton in the rabbitmq_api.sh. This file allows you to change default parameters. The format is `VARIABLE=value`, one per line:
 The default values are as follows:
 
-    USERNAME=guest
-    PASSWORD=guest
-    CONF=/etc/zabbix/zabbix_agent.conf
-    LOGLEVEL=INFO
-    LOGFILE=/var/log/zabbix/rabbitmq_zabbix.log
-    PORT=15672
+    RABBIT_USER='guest'
+    RABBIT_PASSWORD='guest'
+    CONF='/etc/zabbix/zabbix_agentd.conf'
+    LOGLEVEL='INFO'
+    LOGFILE='/var/log/zabbix/zabbix_agentd.log'
+    PORT='15672'
+    PROXY=''        #you are able to set zabbix-proxy here if it is needed
+
 
 You can also add a filter in this file to restrict which queues are monitored.
 This item is a JSON-encoded string. The format provides some flexibility for
@@ -95,6 +95,4 @@ Repo:
 https://github.com/jasonmcintosh/rabbitmq-zabbix
 
 ## Definite kudos to some of the other developers around the web.  In particular,
-* Python Scripts: https://github.com/kmcminn/rabbit-nagios
-* Base idea for the Rabbit template:  https://github.com/alfss/zabbix-rabbitmq
-* Also need to thank Lewis Franklin https://github.com/brolewis for his contributions!
+* Base idea for this template: https://github.com/jasonmcintosh/rabbitmq-zabbix

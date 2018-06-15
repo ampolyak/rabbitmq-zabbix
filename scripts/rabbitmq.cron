@@ -1,0 +1,1 @@
+* * * * * root lckdo /tmp/rabbitmq_zabbix_send.sh.lock timeout 10 /usr/local/bin/rabbitmq_zabbix_send.sh

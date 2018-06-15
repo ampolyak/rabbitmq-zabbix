@@ -19,7 +19,7 @@ def test_queue_check(capsys, monkeypatch):
     def mockloggingconfig(filename, level, format):
         assert filename == "/var/log/zabbix/rabbitmq_zabbix.log"
     def mockdebug(somestring):
-        global debugoutput 
+        global debugoutput
         debugoutput = debugoutput + somestring + "####"
     monkeypatch.setattr(logging, "basicConfig", mockloggingconfig)
     monkeypatch.setattr(logging, "debug", mockdebug)
