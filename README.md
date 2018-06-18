@@ -18,7 +18,6 @@ Set of python scripts, zabbix template, and associated data to do autodiscovery
 4. Make sure zabbix_sender is installed
 5. **WARNING** Watch your process timeout.  I hit an issue with the amount of data and queues in rabbit where processing the results took longer than 3 seconds - that's the default timeout for the agent to kill a process.  If I can switch to a file based push instead of calling send for each item, this will hopefully reduce the time to send even further
 6. Restart the local zabbix agent
-7. Copy scripts/rabbitmq.cron to /etc/cron.d/
 
 ## CONFIGURATION:
 **Basic security recommendation** See https://www.rabbitmq.com/access-control.html for more information on access control.
@@ -92,7 +91,7 @@ Add a local cache of the results (may be overkill for RabbitMQ).
 Feel free to submit changes or ideas - mcintoshj@gmail.com
 
 Repo:
-https://github.com/jasonmcintosh/rabbitmq-zabbix
+https://github.com/ampolyak/rabbitmq-zabbix
 
 ## Definite kudos to some of the other developers around the web.  In particular,
 * Base idea for this template: https://github.com/jasonmcintosh/rabbitmq-zabbix

@@ -96,12 +96,9 @@ class RabbitMQAPI(object):
 
     def check_queue(self, filters=None):
         # Return the value for a specific item in a queue's details.
-        return_code = 0
         if not filters:
             filters = [{}]
-
         rdatafile = tempfile.NamedTemporaryFile(delete=False)
-
         for queue in self.call_api('queues'):
             success = False
             logging.debug("Filtering out by " + str(filters))
@@ -119,27 +116,31 @@ class RabbitMQAPI(object):
         return return_code
 
     def list_exchanges(self, filters=None):
-        exchanges = []
-        if not filters:
-            filters = [{}]
-        for exchange in self.call_api('exchanges'):
-            logging.debug("Discovered exchange " + exchange['name'] + ", checking to see if it's contains messages...")
-            if 'message_stats' in exchange.keys():
-                logging.debug("Discovered exchange " + exchange['name'] + ", checking to see if it's filtered...")
-                for _filter in filters:
-                    check = [(x, y) for x, y in exchange.items() if x in _filter]
-                    shared_items = set(_filter.items()).intersection(check)
-                    if len(shared_items) == len(_filter):
-                        element = {'{#VHOSTNAME}': exchange['vhost'],
-                                   '{#EXCHANGENAME}': exchange['name']}
-                        exchanges.append(element)
-                        logging.debug('Discovered exchange '+exchange['vhost']+'/'+exchange['name'])
-                        break
-        return exchanges
+        for node in self.call_api('nodes'):
+            # We need to return the node name, because Zabbix
+            # does not support @ as an item parameter
+            name = node['name'].split('@')[1]
+            exchanges = []
+            if not filters:
+                filters = [{}]
+            for exchange in self.call_api('exchanges'):
+                logging.debug("Discovered exchange " + exchange['name'] + ", checking to see if it's contains messages...")
+                if 'message_stats' in exchange.keys():
+                    logging.debug("Discovered exchange " + exchange['name'] + ", checking to see if it's filtered...")
+                    for _filter in filters:
+                        check = [(x, y) for x, y in exchange.items() if x in _filter]
+                        shared_items = set(_filter.items()).intersection(check)
+                        if len(shared_items) == len(_filter):
+                            element = {'{#NODENAME}': name,
+                                       '{#VHOSTNAME}': exchange['vhost'],
+                                       '{#EXCHANGENAME}': exchange['name']}
+                            exchanges.append(element)
+                            logging.debug('Discovered exchange '+exchange['vhost']+'/'+exchange['name'])
+                            break
+            return exchanges
 
     def check_exchange(self, filters=None):
         # Return the value for a specific item in a queue's details.
-        return_code = 0
         rdatafile = tempfile.NamedTemporaryFile(delete=False)
         for exchange in self.call_api('exchanges'):
             if 'message_stats' in exchange.keys():
@@ -160,7 +161,6 @@ class RabbitMQAPI(object):
 
     def check_shovel(self, filters=None):
         # Return the value for a specific item in a shovel's details.
-        return_code = 0
         if not filters:
             filters = [{}]
 
@@ -212,20 +212,20 @@ class RabbitMQAPI(object):
             args = args + " -z " + self.proxy
         if self.senderhostname:
             args = args + " -s " + self.senderhostname
-        return_code = 0
         process = subprocess.Popen(args.format(self.conf, tmpfile.name),
                                            shell=True, stdout=subprocess.PIPE,
                                            stderr=subprocess.PIPE)
         out, err = process.communicate()
         logging.debug("Finished sending data")
         return_code = process.wait()
-        logging.info("Found return code of " + str(return_code))
-        if return_code == 1:
-            logging.error(out)
-            logging.error(err)
-        else:
+        logging.debug("Found return code of " + str(return_code))
+        if return_code == 0:
             logging.debug(err)
             logging.debug(out)
+
+        else:
+            logging.error(out)
+            logging.error(err)
         return return_code
 
     def check_aliveness(self):
@@ -313,13 +313,9 @@ def main():
     elif options.check == 'list_shovels':
         print(json.dumps({'data': api.list_shovels()}))
     elif options.check == 'queues':
-        res = api.check_queue(filters)
-        if res != 0:
-            print(res)
+        print(api.check_queue(filters))
     elif options.check == 'exchanges':
-        res = api.check_exchange(filters)
-        if res != 0:
-            print(res)
+        print(api.check_exchange(filters))
     elif options.check == 'shovels':
         print(api.check_shovel(filters))
     elif options.check == 'check_aliveness':
@@ -332,6 +328,7 @@ def main():
                 print(api.check_server(options.metric, options.node))
             else:
                 print(api.check_server(options.metric, api.host_name))
+
 
 if __name__ == '__main__':
     main()

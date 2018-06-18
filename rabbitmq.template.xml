@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <zabbix_export>
     <version>2.0</version>
-    <date>2018-06-14T15:30:15Z</date>
+    <date>2018-06-18T11:41:02Z</date>
     <groups>
         <group>
             <name>All</name>
@@ -83,7 +83,7 @@
                 </item>
                 <item>
                     <name>RabbitMQ Message Deliver Rates</name>
-                    <type>7</type>
+                    <type>0</type>
                     <snmp_community/>
                     <multiplier>0</multiplier>
                     <snmp_oid/>
@@ -126,7 +126,7 @@
                 </item>
                 <item>
                     <name>RabbitMQ Message Receive Rates</name>
-                    <type>7</type>
+                    <type>0</type>
                     <snmp_community/>
                     <multiplier>0</multiplier>
                     <snmp_oid/>
@@ -169,7 +169,7 @@
                 </item>
                 <item>
                     <name>RabbitMQ Messages Total Count</name>
-                    <type>7</type>
+                    <type>0</type>
                     <snmp_community/>
                     <multiplier>0</multiplier>
                     <snmp_oid/>
@@ -212,7 +212,7 @@
                 </item>
                 <item>
                     <name>RabbitMQ Messages Total Ready</name>
-                    <type>7</type>
+                    <type>0</type>
                     <snmp_community/>
                     <multiplier>0</multiplier>
                     <snmp_oid/>
@@ -255,7 +255,7 @@
                 </item>
                 <item>
                     <name>RabbitMQ Messages Total Unacknowledged</name>
-                    <type>7</type>
+                    <type>0</type>
                     <snmp_community/>
                     <multiplier>0</multiplier>
                     <snmp_oid/>
@@ -297,13 +297,56 @@
                     <logtimefmt/>
                 </item>
                 <item>
+                    <name>RabbitMQ Refresh Rabbit Exchanges Status</name>
+                    <type>0</type>
+                    <snmp_community/>
+                    <multiplier>0</multiplier>
+                    <snmp_oid/>
+                    <key>rabbitmq[exchanges]</key>
+                    <delay>60</delay>
+                    <history>90</history>
+                    <trends>365</trends>
+                    <status>0</status>
+                    <value_type>3</value_type>
+                    <allowed_hosts/>
+                    <units/>
+                    <delta>0</delta>
+                    <snmpv3_contextname/>
+                    <snmpv3_securityname/>
+                    <snmpv3_securitylevel>0</snmpv3_securitylevel>
+                    <snmpv3_authprotocol>0</snmpv3_authprotocol>
+                    <snmpv3_authpassphrase/>
+                    <snmpv3_privprotocol>0</snmpv3_privprotocol>
+                    <snmpv3_privpassphrase/>
+                    <formula>1</formula>
+                    <delay_flex/>
+                    <params/>
+                    <ipmi_sensor/>
+                    <data_type>0</data_type>
+                    <authtype>0</authtype>
+                    <username/>
+                    <password/>
+                    <publickey/>
+                    <privatekey/>
+                    <port/>
+                    <description/>
+                    <inventory_link>0</inventory_link>
+                    <applications>
+                        <application>
+                            <name>rabbitmq server</name>
+                        </application>
+                    </applications>
+                    <valuemap/>
+                    <logtimefmt/>
+                </item>
+                <item>
                     <name>RabbitMQ Refresh Rabbit Queue Status</name>
-                    <type>7</type>
+                    <type>0</type>
                     <snmp_community/>
                     <multiplier>0</multiplier>
                     <snmp_oid/>
                     <key>rabbitmq[queues]</key>
-                    <delay>30</delay>
+                    <delay>60</delay>
                     <history>90</history>
                     <trends>365</trends>
                     <status>0</status>
@@ -341,7 +384,7 @@
                 </item>
                 <item>
                     <name>RabbitMQ Refresh Rabbit Shovel Status</name>
-                    <type>7</type>
+                    <type>0</type>
                     <snmp_community/>
                     <multiplier>0</multiplier>
                     <snmp_oid/>
@@ -349,7 +392,7 @@
                     <delay>30</delay>
                     <history>90</history>
                     <trends>365</trends>
-                    <status>0</status>
+                    <status>1</status>
                     <value_type>4</value_type>
                     <allowed_hosts/>
                     <units/>
@@ -384,7 +427,7 @@
                 </item>
                 <item>
                     <name>RabbitMQ Server Disk Free</name>
-                    <type>7</type>
+                    <type>0</type>
                     <snmp_community/>
                     <multiplier>0</multiplier>
                     <snmp_oid/>
@@ -427,7 +470,7 @@
                 </item>
                 <item>
                     <name>RabbitMQ Server File Desc Limit</name>
-                    <type>7</type>
+                    <type>0</type>
                     <snmp_community/>
                     <multiplier>0</multiplier>
                     <snmp_oid/>
@@ -513,7 +556,7 @@
                 </item>
                 <item>
                     <name>RabbitMQ Server File Desc Used</name>
-                    <type>7</type>
+                    <type>0</type>
                     <snmp_community/>
                     <multiplier>0</multiplier>
                     <snmp_oid/>
@@ -556,7 +599,7 @@
                 </item>
                 <item>
                     <name>RabbitMQ Server Memory Limit</name>
-                    <type>7</type>
+                    <type>0</type>
                     <snmp_community/>
                     <multiplier>0</multiplier>
                     <snmp_oid/>
@@ -642,7 +685,7 @@
                 </item>
                 <item>
                     <name>RabbitMQ Server Memory Used</name>
-                    <type>7</type>
+                    <type>0</type>
                     <snmp_community/>
                     <multiplier>0</multiplier>
                     <snmp_oid/>
@@ -685,7 +728,7 @@
                 </item>
                 <item>
                     <name>RabbitMQ Server Partitions</name>
-                    <type>7</type>
+                    <type>0</type>
                     <snmp_community/>
                     <multiplier>0</multiplier>
                     <snmp_oid/>
@@ -728,7 +771,7 @@
                 </item>
                 <item>
                     <name>RabbitMQ Server Sockets Limit</name>
-                    <type>7</type>
+                    <type>0</type>
                     <snmp_community/>
                     <multiplier>0</multiplier>
                     <snmp_oid/>
@@ -814,7 +857,7 @@
                 </item>
                 <item>
                     <name>RabbitMQ Server Sockets Used</name>
-                    <type>7</type>
+                    <type>0</type>
                     <snmp_community/>
                     <multiplier>0</multiplier>
                     <snmp_oid/>
@@ -857,7 +900,7 @@
                 </item>
                 <item>
                     <name>RabbitMQ Server Version</name>
-                    <type>7</type>
+                    <type>0</type>
                     <snmp_community/>
                     <multiplier>0</multiplier>
                     <snmp_oid/>
@@ -1669,7 +1712,7 @@
             <expression>{Template App RabbitMQ:rabbitmq[check_aliveness].last()}&lt;&gt;1</expression>
             <name>RabbitMQ is down on {HOSTNAME}</name>
             <url/>
-            <status>0</status>
+            <status>1</status>
             <priority>2</priority>
             <description/>
             <type>0</type>
@@ -1679,7 +1722,7 @@
             <expression>{Template App RabbitMQ:rabbitmq[server,sockets_used].last()}&lt;10</expression>
             <name>RabbitMQ sockets low on {HOSTNAME}</name>
             <url/>
-            <status>0</status>
+            <status>1</status>
             <priority>2</priority>
             <description/>
             <type>0</type>
